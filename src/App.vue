@@ -89,7 +89,7 @@
                 <v-img
                   cover
                   class="mt-auto"
-                  src="src/assets/imgs/cropped_Education Illustration Kit-03.png"
+                  src="/imgs/ed_kit_3.png"
                 ></v-img>
               </v-container>
             </v-col>
@@ -103,7 +103,7 @@
               <v-container class="pa-0">
                 <v-img
                   cover
-                  src="src/assets/imgs/cropped_Education Illustration Kit-09.png"
+                  src="/imgs/ed_kit_9.png"
                 ></v-img>
               </v-container>
             </v-col>
@@ -162,7 +162,7 @@
                   <v-avatar
                     class="mt-n16"
                     size="100"
-                    image="src/assets/imgs/photo_2022-10-04_09-12-48.jpg"
+                    image="/imgs/profile_pic_1.jpg"
                   >
                   </v-avatar>
                   <v-card-title class="text-secondary font-weight-bold">
@@ -186,7 +186,7 @@
                   <v-avatar
                     class="mt-n16"
                     size="100"
-                    image="src/assets/imgs/photo_2022-10-04_09-12-48.jpg"
+                    image="/imgs/profile_pic_1.jpg"
                   >
                   </v-avatar>
                   <v-card-title class="text-secondary font-weight-bold">
@@ -210,7 +210,7 @@
                   <v-avatar
                     class="mt-n16"
                     size="100"
-                    image="src/assets/imgs/photo_2022-10-04_09-12-48.jpg"
+                    image="/imgs/profile_pic_1.jpg"
                   >
                   </v-avatar>
                   <v-card-title class="text-secondary font-weight-bold">
@@ -257,12 +257,12 @@
           <img
             class="image2"
             width="450"
-            src="src/assets/imgs/Education Illustration Kit-04.png"
+            src="/imgs/ed_kit_4.png"
           />
           <img
             class="image3"
             width="450"
-            src="src/assets/imgs/Education Illustration Kit-07.png"
+            src="/imgs/ed_kit_7.png"
           />
         </div>
       </v-main>
