@@ -1,4 +1,5 @@
 <template>
+  <create-dialog ref="dialog"></create-dialog>
   <v-toolbar flat color="white" class="text-primary">
     <v-toolbar-title>
       <v-menu class="d-md-none" open-on-click>
@@ -52,6 +53,7 @@
         v-if="isLoggedIn"
         class="no-uppercase font-weight-bold"
         variant="text"
+        to="/eduquiz/my-quizzes"
       >
         meus quizzes
       </v-btn>
@@ -59,6 +61,7 @@
         v-if="isLoggedIn"
         class="no-uppercase font-weight-bold"
         variant="text"
+        @click="createQuiz"
       >
         criar quiz
       </v-btn>
@@ -83,8 +86,16 @@
 
 <script>
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-
+import CreateDialog from "../CreateDialog.vue";
 export default {
+  components: {
+    CreateDialog,
+  },
+  provide() {
+    return {
+      quizCreationDialogOpen: this.quizCreationDialogOpen,
+    };
+  },
   props: ["isLoggedIn"],
   data() {
     return {
@@ -102,6 +113,7 @@ export default {
           value: 3,
         },
       ],
+      quizCreationDialogOpen: false,
     };
   },
   methods: {
@@ -110,6 +122,12 @@ export default {
       signOut(auth).then(() => {
         this.$router.push("/eduquiz");
       });
+    },
+    createQuiz() {
+      this.$refs.dialog.showDialog();
+      //Create a new quiz object in the database and retrieve the quizId
+      //Opens a dialog, to specify the title and the description
+      // quizId: {}
     },
   },
 };

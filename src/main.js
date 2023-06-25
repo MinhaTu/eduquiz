@@ -16,7 +16,13 @@ import { registerPlugins } from "@/plugins";
 
 const store = createStore({
   state() {
-    return { currentPlayer: null, roomPlayers: [], isHost: false, room: null };
+    return {
+      currentPlayer: null,
+      roomPlayers: [],
+      isHost: false,
+      room: null,
+      currentUser: null,
+    };
   },
 });
 

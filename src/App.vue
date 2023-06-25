@@ -20,13 +20,14 @@ export default {
   data() {
     return { isLoggedIn: true };
   },
-  mounted() {
+  created() {
     let auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      debugger;
       if (user) {
+        this.$store.state.userId = user.uid;
         this.isLoggedIn = true;
       } else {
+        this.$store.state.userId = null;
         this.isLoggedIn = false;
       }
     });
