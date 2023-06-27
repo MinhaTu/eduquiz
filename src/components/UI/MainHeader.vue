@@ -9,7 +9,7 @@
             class="font-weight-black text-h4"
             width="135px"
             v-bind="props"
-            to="/eduquiz"
+            to="/eduquiz/"
           >
             Eduquiz
           </v-btn>
@@ -50,15 +50,39 @@
         criar conta
       </v-btn>
       <v-btn
-        v-if="isLoggedIn"
+        v-if="isLoggedIn && !$store.state.creationMode"
         class="no-uppercase font-weight-bold"
         variant="text"
         to="/eduquiz/my-quizzes"
       >
         meus quizzes
       </v-btn>
+      <v-icon
+        class="unsaved-icon"
+        v-if="$store.state.unsaved && $store.state.creationMode"
+        color="red"
+      >
+        mdi-alert-octagram-outline
+      </v-icon>
       <v-btn
-        v-if="isLoggedIn"
+        v-if="isLoggedIn && $store.state.creationMode"
+        rounded
+        class="mx-1 no-uppercase"
+        style="background-color: #d37146; color: white"
+      >
+        salvar
+      </v-btn>
+
+      <v-btn
+        v-if="isLoggedIn && $store.state.creationMode"
+        rounded
+        variant="outlined"
+        class="ml-1 mr-16 no-uppercase"
+      >
+        visualizar
+      </v-btn>
+      <v-btn
+        v-if="isLoggedIn && !$store.state.creationMode"
         class="no-uppercase font-weight-bold"
         variant="text"
         @click="createQuiz"
@@ -132,3 +156,20 @@ export default {
   },
 };
 </script>
+<style>
+.unsaved-icon {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>

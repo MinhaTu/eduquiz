@@ -42,7 +42,14 @@
 </template>
 
 <script>
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  arrayUnion,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { dbFirestore } from "@/firebase";
 export default {
@@ -56,15 +63,40 @@ export default {
     createQuiz() {
       const auth = getAuth();
       const user = auth.currentUser;
-      addDoc(collection(dbFirestore, "quizzes"), {
-        title: this.title,
-        description: this.description,
-        createdBy: user.uid,
-        createdAt: serverTimestamp(),
-      }).then((quizDoc) => {
-        console.log("quiz doc id , ", quizDoc.id);
-        this.dialog = false;
-        this.$router.push("/eduquiz/create-quiz/" + quizDoc.id);
+
+      let slideId;
+      this.createFirstSlide().then((slideDoc) => {
+        slideId = slideDoc.id;
+
+        console.log("first slide id" + slideDoc.id);
+        addDoc(collection(dbFirestore, "quizzes"), {
+          title: this.title,
+          description: this.description,
+          createdBy: user.uid,
+          createdAt: serverTimestamp(),
+          slides: arrayUnion(slideDoc.id),
+        }).then((quizDoc) => {
+          console.log("quiz doc id , ", quizDoc.id);
+
+          const slideDoc = doc(dbFirestore, "slides", slideId);
+          updateDoc(slideDoc, {
+            quizId: quizDoc.id,
+          }).then(() => {
+            this.dialog = false;
+            this.$router.push("/eduquiz/create-quiz/" + quizDoc.id);
+          });
+        });
+      });
+    },
+    async createFirstSlide() {
+      return await addDoc(collection(dbFirestore, "slides"), {
+        question: "Título randômico",
+        optA: "O homem",
+        optB: "A tartaruga",
+        optC: "O inseto",
+        optD: "A lebre",
+        countdownTime: 20,
+        scoreSystem: "default",
       });
     },
   },

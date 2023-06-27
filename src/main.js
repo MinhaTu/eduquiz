@@ -22,6 +22,8 @@ const store = createStore({
       isHost: false,
       room: null,
       currentUser: null,
+      creationMode: false,
+      unsaved: false,
     };
   },
 });
