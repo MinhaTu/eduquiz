@@ -16,13 +16,17 @@
           variant="outlined"
           v-model="userEmail"
           type="text"
+          prepend-inner-icon="mdi-email-outline"
           label="Email"
         ></v-text-field>
         <v-text-field
           class="mx-16 my-2 px-8"
           variant="outlined"
           v-model="userPassword"
-          type="password"
+          prepend-inner-icon="mdi-lock-outline"
+          :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="visible ? 'text' : 'password'"
+          @click:append-inner="visible = !visible"
           label="Senha"
         ></v-text-field>
         <p class="text-red mt-0 text-center" v-if="errorMsg">{{ errorMsg }}</p>
@@ -52,6 +56,7 @@ export default {
       userEmail: "",
       userPassword: "",
       errorMsg: "",
+      visible: false,
     };
   },
   methods: {
