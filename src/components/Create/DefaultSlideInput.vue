@@ -24,6 +24,7 @@
         color="#DBDCF1"
         height="300"
         class="w-50 mx-auto elevation-3 text-center"
+        v-if="!imagePreview"
       >
         <v-card-title class="mt-16">
           Encontre e insira uma imagem
@@ -33,10 +34,28 @@
           <v-file-input
             class="mt-16"
             variant="underlined"
-            v-model="slide.image"
+            @change="onFileInputChange"
           >
           </v-file-input>
         </v-container>
+      </v-card>
+
+      <v-card
+        color="#DBDCF1"
+        height="300"
+        class="w-50 mx-auto elevation-3 text-center"
+        v-if="imagePreview"
+      >
+        <v-btn
+          rounded
+          size="30"
+          color="secondary"
+          class="no-uppercase btn-out"
+          icon="mdi-close-circle-outline"
+          @click="imagePreview = false"
+        >
+        </v-btn>
+        <v-img :src="imagePreview" v-if="imagePreview" cover></v-img>
       </v-card>
 
       <v-card-actions class="d-flex flex-column justify-end">
@@ -60,7 +79,7 @@
                 >
                 </v-text-field>
               </div>
-              <v-radio-group v-model="radioGroup">
+              <v-radio-group v-model="slide.rightOpt">
                 <v-radio class="mr-8" value="optA" color="white"> </v-radio>
               </v-radio-group>
             </v-card>
@@ -99,7 +118,7 @@
                 >
                 </v-text-field>
               </div>
-              <v-radio-group v-model="radioGroup">
+              <v-radio-group v-model="slide.rightOpt">
                 <v-radio class="mr-8" value="optB" color="white"> </v-radio>
               </v-radio-group>
             </v-card>
@@ -140,7 +159,7 @@
                 >
                 </v-text-field>
               </div>
-              <v-radio-group v-model="radioGroup">
+              <v-radio-group v-model="slide.rightOpt">
                 <v-radio class="mr-8" value="optC" color="white"> </v-radio>
               </v-radio-group>
             </v-card>
@@ -180,7 +199,7 @@
                 >
                 </v-text-field>
               </div>
-              <v-radio-group v-model="radioGroup">
+              <v-radio-group v-model="slide.rightOpt">
                 <v-radio class="mr-8" value="optD" color="white"> </v-radio>
               </v-radio-group>
             </v-card>
@@ -216,23 +235,33 @@ export default {
     },
   },
   data() {
-    return { radioGroup: 1 };
+    return { imagePreview: null };
   },
   methods: {
+    onFileInputChange(event) {
+      debugger;
+      const file = event.target.files[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          this.imagePreview = reader.result;
+        };
+
+        reader.readAsDataURL(file);
+      }
+      this.slide.image = file;
+    },
     emitSlideChangeByUser() {
       this.$emit("slide-data-updated-by-user", this.slide);
     },
   },
   watch: {
-    radioGroup: {
-      handler() {
-        console.log("Radio value ", this.radioGroup);
-        this.slide.rightOpt = this.radioGroup;
-      },
-    },
     slide: {
       deep: true,
       handler() {
+        debugger;
         this.emitSlideChangeByUser();
       },
     },
@@ -245,5 +274,13 @@ export default {
   box-shadow: none !important;
   border: 0px solid #000;
   border-radius: 15px; /* Adjust the border radius as needed */
+}
+
+.btn-out {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  z-index: 10;
+  padding: 0px;
 }
 </style>

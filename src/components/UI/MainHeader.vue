@@ -1,5 +1,6 @@
 <template>
-  <create-dialog ref="dialog"></create-dialog>
+  <create-dialog ref="createDialog"></create-dialog>
+  <view-quiz-dialog ref="viewDialog"></view-quiz-dialog>
   <v-toolbar flat color="white" class="text-primary">
     <v-toolbar-title>
       <v-menu class="d-md-none" open-on-click>
@@ -69,6 +70,7 @@
         rounded
         class="mx-1 no-uppercase"
         style="background-color: #d37146; color: white"
+        @click="saveSlides"
       >
         salvar
       </v-btn>
@@ -78,6 +80,7 @@
         rounded
         variant="outlined"
         class="ml-1 mr-16 no-uppercase"
+        @click="openPresentation"
       >
         visualizar
       </v-btn>
@@ -106,14 +109,29 @@
       </v-btn>
     </div>
   </v-toolbar>
+  <v-snackbar v-model="snackbar" multi-line>
+    {{ snackbarText }}
+
+    <template v-slot:actions>
+      <v-btn color="red" variant="text" @click="snackbar = false">
+        Fechar
+      </v-btn>
+    </template>
+  </v-snackbar>
 </template>
 
 <script>
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { dbFirestore } from "@/firebase";
 import CreateDialog from "../CreateDialog.vue";
+import ViewQuizDialog from "../Create/ViewQuizDialog.vue";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
 export default {
   components: {
     CreateDialog,
+    ViewQuizDialog,
   },
   provide() {
     return {
@@ -123,6 +141,8 @@ export default {
   props: ["isLoggedIn"],
   data() {
     return {
+      snackbar: false,
+      snackbarText: "",
       toolbarItems: [
         {
           title: "sobre",
@@ -148,10 +168,74 @@ export default {
       });
     },
     createQuiz() {
-      this.$refs.dialog.showDialog();
+      this.$refs.createDialog.showDialog();
       //Create a new quiz object in the database and retrieve the quizId
       //Opens a dialog, to specify the title and the description
       // quizId: {}
+    },
+    openPresentation() {
+      this.$refs.viewDialog.showDialog();
+    },
+    async saveSlides() {
+      debugger;
+      const slides = this.$store.state.slides;
+      const slideIds = [];
+      await this.saveImages(slides);
+      for (const slide of slides) {
+        if (!this.validateSlide(slide)) {
+          return;
+        }
+
+        let slideDoc = doc(dbFirestore, "slides", slide.slideId);
+        await setDoc(slideDoc, slide, { merge: true });
+        slideIds.push(slide.slideId);
+      }
+
+      const quizDoc = doc(dbFirestore, "quizzes", slides[0].quizId);
+      await updateDoc(
+        quizDoc,
+        {
+          slides: arrayUnion(...slideIds),
+        },
+        { merge: true }
+      );
+      this.$store.state.unsaved = false;
+    },
+    async saveImages() {
+      const storage = getStorage();
+      for (const slide of this.$store.state.slides) {
+        const storageRef = ref(storage, "images/" + slide.slideId);
+
+        // 'file' comes from the Blob or File API
+        await uploadBytes(storageRef, slide.image).then((snapshot) => {
+          debugger;
+          console.log("Uploaded a blob or file!");
+          console.log(snapshot);
+        });
+      }
+    },
+    validateSlide(slide) {
+      if (slide.scoreSystem === undefined || slide.scoreSystem === "") {
+        this.snackbarText =
+          "Por favor, verifique os slides. O sistema de pontuação está ausente.";
+      } else if (slide.rightOpt === undefined || slide.rightOpt === "") {
+        this.snackbarText =
+          "Por favor, verifique os slides. A resposta correta está ausente.";
+      } else if (slide.question === undefined || slide.question === "") {
+        this.snackbarText =
+          "Por favor, verifique os slides. A pergunta está ausente.";
+      } else if (slide.slideId === undefined || slide.slideId === "") {
+        this.snackbarText =
+          "Por favor, verifique os slides. O ID do slide está ausente.";
+      } else if (slide.quizId === undefined || slide.quizId === "") {
+        this.snackbarText =
+          "Por favor, verifique os slides. O ID do quiz está ausente.";
+      } else {
+        return true;
+      }
+
+      this.snackbar = true;
+      return false;
     },
   },
 };

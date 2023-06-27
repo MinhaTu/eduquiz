@@ -1,4 +1,13 @@
 <template>
+  <v-snackbar v-model="snackbar" multi-line>
+    {{ snackbarText }}
+
+    <template v-slot:actions>
+      <v-btn color="red" variant="text" @click="snackbar = false">
+        Fechar
+      </v-btn>
+    </template>
+  </v-snackbar>
   <v-main>
     <v-sheet
       height="720"
@@ -42,7 +51,7 @@
 
         <v-list density="compact" nav>
           <v-list-item
-            v-for="(slide, index) in slides"
+            v-for="(slide, index) in $store.state.slides"
             :key="slide.slideId"
             :value="slide.slideId"
             @click="handleSlideClick(slide)"
@@ -54,6 +63,7 @@
                   size="15"
                   variant="text"
                   icon="mdi-trash-can-outline"
+                  @click="deleteSlide(slide)"
                 ></v-btn>
               </div>
             </template>
@@ -219,16 +229,22 @@ import {
   getDocs,
   getDoc,
   Timestamp,
+  deleteDoc,
 } from "firebase/firestore";
 import { dbFirestore } from "@/firebase";
 import DefaultSlideInput from "../components/Create/DefaultSlideInput.vue";
+import TheCountdown from "../components/UI/TheCountdown.vue";
 import { v4 as uuidv4 } from "uuid";
+import { getStorage, ref, getBlob } from "firebase/storage";
 export default {
   components: {
     DefaultSlideInput,
+    TheCountdown,
   },
   data() {
     return {
+      snackbar: false,
+      snackbarText: "",
       slideTypes: [
         {
           title: "Padrão",
@@ -239,12 +255,22 @@ export default {
       rail: true,
       drawer2: true,
       rail2: true,
-      slides: [],
       selectedSlide: null,
       loading: true,
     };
   },
   methods: {
+    async deleteSlide(slide) {
+      if (this.$store.state.slides.length <= 1) {
+        this.snackbarText = "Quiz precisa ter pelo menos um slide!";
+        this.snackbar = true;
+        return;
+      }
+      await deleteDoc(doc(dbFirestore, "slides", slide.slideId));
+      const index = this.$store.state.slides.indexOf(slide);
+      this.$store.state.slides.splice(index, 1);
+    },
+
     createNewSlide(slideType) {
       debugger;
       //Unique type available
@@ -257,35 +283,40 @@ export default {
           optC: "",
           optD: "",
           countdownTime: 20,
+          quizId: this.quizId,
           scoreSystem: "default",
         };
 
-        // const newSlides = JSON.parse(JSON.stringify(this.slides));
+        // const newSlides = JSON.parse(JSON.stringify(this.$store.state.slides));
         // newSlides.push(newSlide);
-        // this.slides.splice(0, this.slides.length, ...newSlides);
-        this.slides.splice(this.slides.length, 0, newSlide);
-        console.log("New slides array ", this.slides);
+        // this.$store.state.slides.splice(0, this.$store.state.slides.length, ...newSlides);
+        this.$store.state.slides.splice(
+          this.$store.state.slides.length,
+          0,
+          newSlide
+        );
+        console.log("New slides array ", this.$store.state.slides);
       }
     },
     handleSlideClick(slide) {
       debugger;
       console.log("Slide selected", slide);
       this.selectedSlide = slide;
-      console.log("the whole slide array, ", this.slides);
+      console.log("the whole slide array, ", this.$store.state.slides);
     },
     handleSlideUpdateByUser(updatedSlide) {
       this.$store.state.unsaved = true;
 
-      const slideIndex = this.slides.findIndex(
+      const slideIndex = this.$store.state.slides.findIndex(
         (slide) => slide.slideId === updatedSlide.slideId
       );
 
       if (slideIndex !== -1) {
-        this.slides.splice(slideIndex, 1, updatedSlide);
+        this.$store.state.slides.splice(slideIndex, 1, updatedSlide);
       } else {
         console.log("Slide not found");
       }
-      console.log(this.slides);
+      console.log(this.$store.state.slides);
     },
     async getSlides(quizId) {},
     confirmLeave() {
@@ -316,20 +347,20 @@ export default {
 
     const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach(async (doc) => {
       debugger;
-      this.slides.push({ slideId: doc.id, ...doc.data() });
+      this.$store.state.slides.push({ slideId: doc.id, ...doc.data() });
       this.selectedSlide = 0;
-      console.log(this.slides);
+      console.log(this.$store.state.slides);
     });
 
-    // const finished = await this.getSlides(this.quizId);
-    this.selectedSlide = this.slides[0];
+    this.selectedSlide = this.$store.state.slides[0];
     console.log("SELECTED SLIDE", this.selectedSlide);
     this.loading = false;
   },
   unmounted() {
     this.$store.state.creationMode = false;
+    this.$store.state.slides = [];
   },
   created() {
     window.addEventListener("beforeunload", this.beforeWindowUnload);

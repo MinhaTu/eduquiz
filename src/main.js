@@ -24,6 +24,7 @@ const store = createStore({
       currentUser: null,
       creationMode: false,
       unsaved: false,
+      slides: [],
     };
   },
 });
