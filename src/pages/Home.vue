@@ -115,8 +115,6 @@ export default {
       if (this.beHost) {
         this.updateRoomHost();
       }
-      this.$store.state.currentPlayer = this.nickname;
-      console.log("Vuex currentPlayer:", this.$store.state.currentPlayer);
       this.addRoomPlayer();
       this.amIOnline();
       this.$router.push("/room");

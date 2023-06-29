@@ -1,14 +1,14 @@
 <template>
   <div class="countdown-timer">
     <v-progress-circular
-      v-if="countdownTime > 0 && currentCountdown > 0"
+      v-if="countdownTime > 0"
       :size="80"
       :width="10"
-      :value="currentCountdown"
+      :value="countdownTime"
       color="primary"
       indeterminate
     >
-      {{ currentCountdown }}
+      {{ countdownTime }}
     </v-progress-circular>
     <div v-else class="countdown-complete">Fim!</div>
   </div>
@@ -20,32 +20,6 @@ export default {
     countdownTime: {
       type: Number,
       required: true,
-    },
-  },
-  data() {
-    return {
-      currentCountdown: this.countdownTime,
-    };
-  },
-  mounted() {
-    this.startCountdown();
-  },
-  methods: {
-    startCountdown() {
-      const interval = setInterval(() => {
-        if (this.currentCountdown === 0) {
-          clearInterval(interval);
-        } else {
-          this.currentCountdown--;
-        }
-      }, 1000);
-    },
-  },
-  watch: {
-    currentCountdown(newCountdown) {
-      if (newCountdown === 0) {
-        clearInterval(this.interval);
-      }
     },
   },
 };

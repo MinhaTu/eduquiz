@@ -11,12 +11,7 @@
       class="d-flex justify-space-evenly flex-wrap py-10"
       style="gap: 50px"
     >
-      <Quiz
-        v-for="quiz in quizzes"
-        :title="quiz.title"
-        :createdAt="quiz.createdAt"
-      >
-      </Quiz>
+      <Quiz v-for="quiz in quizzes" :quiz="quiz"> </Quiz>
     </v-container>
   </v-main>
 </template>

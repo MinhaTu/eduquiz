@@ -51,7 +51,7 @@
         criar conta
       </v-btn>
       <v-btn
-        v-if="isLoggedIn && !$store.state.creationMode"
+        v-if="isLoggedIn"
         class="no-uppercase font-weight-bold"
         variant="text"
         to="/eduquiz/my-quizzes"

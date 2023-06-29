@@ -14,15 +14,35 @@
         <v-text-field
           class="mx-16 my-8 px-8"
           variant="outlined"
+          v-model="userFirstName"
+          type="text"
+          prepend-inner-icon="mdi-account"
+          label="Primeiro Nome"
+        ></v-text-field>
+        <v-text-field
+          class="mx-16 my-8 px-8"
+          variant="outlined"
+          v-model="userLastName"
+          type="text"
+          prepend-inner-icon="mdi-account-details"
+          label="Segundo nome"
+        ></v-text-field>
+        <v-text-field
+          class="mx-16 my-8 px-8"
+          variant="outlined"
           v-model="userEmail"
           type="text"
+          prepend-inner-icon="mdi-email-outline"
           label="Email"
         ></v-text-field>
         <v-text-field
           class="mx-16 my-2 px-8"
           variant="outlined"
           v-model="userPassword"
-          type="password"
+          prepend-inner-icon="mdi-lock-outline"
+          :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="visible ? 'text' : 'password'"
+          @click:append-inner="visible = !visible"
           label="Senha"
         ></v-text-field>
         <v-card-actions class="mb-16 justify-center">
@@ -50,6 +70,7 @@ export default {
     return {
       userEmail: "",
       userPassword: "",
+      visible: false,
     };
   },
   methods: {
@@ -58,9 +79,9 @@ export default {
       createUserWithEmailAndPassword(auth, this.userEmail, this.userPassword)
         .then((userCredential) => {
           // Signed in
-          debugger;
           const user = userCredential.user;
           console.log("Registration sucessful", user);
+          this.$router.push("/eduquiz/");
           // ...
         })
         .catch((error) => {

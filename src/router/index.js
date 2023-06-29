@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from "../pages/Home.vue";
 import Room from "../pages/Room.vue";
+import TheRoom from "../pages/TheRoom.vue";
 import Game from "../pages/Game.vue";
 import LandingPage from "../pages/LandingPage.vue";
 import Login from "../pages/Login.vue";
@@ -21,6 +22,7 @@ const router = createRouter({
     { path: "/eduquiz/my-quizzes", component: YourQuizzes },
     { path: "/eduquiz/create-quiz/:quizId", component: CreateQuiz },
     { path: "/eduquiz/public-rooms", component: PublicRooms },
+    { path: "/eduquiz/rooms/:roomId", component: TheRoom },
   ],
 });
 
