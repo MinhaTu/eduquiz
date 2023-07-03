@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
+import { getPerformance } from "firebase/performance";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAsDozDKo4h65QCnqjiGEKuBfm6sUbzkYA",
@@ -18,5 +19,6 @@ const appFirebase = initializeApp(firebaseConfig);
 const dbRtdb = getDatabase(appFirebase);
 const dbFirestore = getFirestore();
 const storage = getStorage(appFirebase);
+const perf = getPerformance(appFirebase);
 
-export { dbFirestore, dbRtdb, appFirebase, storage };
+export { dbFirestore, dbRtdb, appFirebase, storage, perf };

@@ -142,7 +142,8 @@ import {
   orderByChild,
 } from "firebase/database";
 import { doc, setDoc, updateDoc, collection, getDoc } from "firebase/firestore";
-import { dbFirestore, dbRtdb } from "@/firebase";
+import { trace } from "firebase/performance";
+import { dbFirestore, dbRtdb, perf } from "@/firebase";
 import TheCountdownVue from "../UI/TheCountdown.vue";
 export default {
   components: {
@@ -193,7 +194,8 @@ export default {
   },
   methods: {
     async fireNextState() {
-      debugger;
+      const t = trace(perf, "CUSTOM_FIRE_NEXT_STATE");
+      t.start();
       if (this.buttonLabel === "resultados") {
         const docRef = doc(dbFirestore, "rooms", this.roomId);
         await updateDoc(docRef, {
@@ -220,6 +222,7 @@ export default {
         });
         this.buttonLabel = "resultados";
       }
+      t.stop();
     },
     async sendAnswer(option) {
       debugger;
