@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" persistent width="1024">
+  <v-dialog v-model="dialog" persistent style="max-width: 1024px">
     <v-card flat color="#DBDCF1" class="mx-auto rounded-lg">
       <v-card-title class="text-secondary font-weight-bold my-4">
         Digite as informações básicas do seu quiz

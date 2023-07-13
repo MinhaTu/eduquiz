@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="mx-auto w-75" style="max-width: 1100px">
+    <div class="mx-auto w-100 w-md-75" style="max-width: 1100px">
       <MainHeader :isLoggedIn="isLoggedIn"></MainHeader>
     </div>
     <router-view></router-view>

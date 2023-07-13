@@ -1,5 +1,5 @@
 <template>
-  <v-main class="my-10 mx-auto w-75" style="max-width: 1100px">
+  <v-main class="my-10 mx-auto w-100 w-md-75" style="max-width: 1100px">
     <v-card flat class="text-primary">
       <v-row no-gutters>
         <v-col cols="12" md="5" class="d-flex flex-column">
