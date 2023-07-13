@@ -15,7 +15,40 @@
             Eduquiz
           </v-btn>
         </template>
-        <v-list :items="toolbarItems"></v-list>
+        <v-list>
+          <v-btn
+            block
+            v-if="isLoggedIn && !$store.state.creationMode"
+            class="no-uppercase font-weight-bold"
+            variant="text"
+            @click="createQuiz"
+          >
+            criar quiz
+          </v-btn>
+          <v-btn
+            v-if="isLoggedIn"
+            class="no-uppercase font-weight-bold"
+            variant="text"
+            to="/eduquiz/my-quizzes"
+          >
+            meus quizzes
+          </v-btn>
+          <v-btn block class="no-uppercase font-weight-bold" variant="text">
+            sobre
+          </v-btn>
+          <v-btn block class="no-uppercase font-weight-bold" variant="text">
+            contato
+          </v-btn>
+          <v-btn
+            block
+            class="no-uppercase font-weight-bold"
+            variant="text"
+            append-icon="mdi-menu-down"
+            to="/eduquiz/public-rooms"
+          >
+            salas
+          </v-btn>
+        </v-list>
       </v-menu>
     </v-toolbar-title>
     <div class="d-none d-md-flex ml-n5">
@@ -107,6 +140,54 @@
       >
         sair
       </v-btn>
+    </div>
+
+    <div class="d-md-none">
+      <div v-if="!$store.state.creationMode">
+        <v-btn
+          v-if="isLoggedIn"
+          rounded
+          class="no-uppercase"
+          style="background-color: #d37146; color: white"
+        >
+          perfil
+        </v-btn>
+        <v-btn
+          v-if="isLoggedIn"
+          class="no-uppercase font-weight-bold"
+          @click="handleSignOut"
+        >
+          sair
+        </v-btn>
+      </div>
+      <div v-else>
+        <v-icon
+          class="unsaved-icon"
+          v-if="$store.state.unsaved && $store.state.creationMode"
+          color="red"
+        >
+          mdi-alert-octagram-outline
+        </v-icon>
+        <v-btn
+          v-if="isLoggedIn && $store.state.creationMode"
+          rounded
+          class="mx-1 no-uppercase"
+          style="background-color: #d37146; color: white"
+          @click="saveSlides"
+        >
+          salvar
+        </v-btn>
+
+        <v-btn
+          v-if="isLoggedIn && $store.state.creationMode"
+          rounded
+          variant="outlined"
+          class="ml-1 no-uppercase"
+          @click="openPresentation"
+        >
+          visualizar
+        </v-btn>
+      </div>
     </div>
   </v-toolbar>
   <v-snackbar v-model="snackbar" multi-line>

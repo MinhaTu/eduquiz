@@ -1,0 +1,49 @@
+{
+    "quizId": {
+        "createdAt": "timestamp",
+        "createdBy": "userId",
+        "title": "Title",
+        "description": "Desc",
+        "slides": [
+            "slideId1",
+            "slideId2",
+            "slideId3"
+        ]
+    }
+},
+{
+    "slideId": {
+        "createdAt": "timestamp",
+        "quizId": "quizId1",
+        "countdownTime": 20,
+        "optA": "option",
+        "optB": "option",
+        "optC": "option",
+        "optD": "option",
+        "rightOpt": "optA",
+        "scoreSystem": "default",
+    }
+},
+"answerId1": {
+    "createdAt": "timestamp",
+    "userId1": "option",
+    "userId2": "option",
+    "userId3": "option",
+}
+
+"roomId1": {
+    "createdAt": "timestamp",
+    "createdBy": "userId1",
+    "gameState": "START",
+    "hostId": "userId1",
+    "quizId": "quizId1",
+    "numberOfSlides": 3,
+    "currentSlidePos": 0,
+    "currentSlideId": "slideId1",
+    "currentSlide": slide,
+    "roomPlayers": [
+        "userId2",
+        "userId3",
+        "userId4"
+    ]
+}

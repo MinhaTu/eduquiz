@@ -38,13 +38,13 @@
       flat
       color="#F2F2FA"
       height="800px"
-      class="w-100 rounded-drawer d-flex flex-column justify-center align-center"
+      class="rounded-drawer d-flex flex-column justify-center align-center text-wrap"
     >
       <v-card flat color="white">
-        <v-card-title class="bg-primary">
+        <v-card-title class="bg-primary text-center text-md-left">
           Digite seu nome para entrar na sala
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="w-50 w-md-100 mx-auto">
           <v-text-field
             variant="underlined"
             label="nickname"
