@@ -9,11 +9,13 @@ import Register from "../pages/Register.vue";
 import PublicRooms from "../pages/PublicRooms.vue";
 import CreateQuiz from "../pages/CreateQuiz.vue";
 import YourQuizzes from "../pages/YourQuizzes.vue";
+import About from "../pages/About.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: "/eduquiz/", component: LandingPage },
+    { path: "/eduquiz/about", component: About },
     { path: "/eduquiz/room", component: Room },
     { path: "/eduquiz/game", component: Game },
     { path: "/eduquiz/home", component: Home },

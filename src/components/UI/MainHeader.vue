@@ -33,10 +33,13 @@
           >
             meus quizzes
           </v-btn>
-          <v-btn block class="no-uppercase font-weight-bold" variant="text">
-            sobre
-          </v-btn>
-          <v-btn block class="no-uppercase font-weight-bold" variant="text">
+          <v-btn
+            block
+            class="no-uppercase font-weight-bold"
+            variant="text"
+            href="https://github.com/MinhaTu/eduquiz"
+            target="_blank"
+          >
             contato
           </v-btn>
           <v-btn
@@ -52,10 +55,12 @@
       </v-menu>
     </v-toolbar-title>
     <div class="d-none d-md-flex ml-n5">
-      <v-btn class="no-uppercase font-weight-bold" variant="text">
-        sobre
-      </v-btn>
-      <v-btn class="no-uppercase font-weight-bold" variant="text">
+      <v-btn
+        class="no-uppercase font-weight-bold"
+        variant="text"
+        href="https://github.com/MinhaTu/eduquiz"
+        target="_blank"
+      >
         contato
       </v-btn>
       <v-btn
@@ -159,6 +164,23 @@
         >
           sair
         </v-btn>
+
+        <v-btn
+          v-if="!isLoggedIn"
+          class="no-uppercase font-weight-bold"
+          to="/eduquiz/login"
+        >
+          entrar
+        </v-btn>
+        <v-btn
+          v-if="!isLoggedIn"
+          rounded
+          class="no-uppercase mx-1"
+          style="background-color: #d37146; color: white"
+          to="/eduquiz/register"
+        >
+          criar conta
+        </v-btn>
       </div>
       <div v-else>
         <v-icon
@@ -224,20 +246,6 @@ export default {
     return {
       snackbar: false,
       snackbarText: "",
-      toolbarItems: [
-        {
-          title: "sobre",
-          value: 1,
-        },
-        {
-          title: "contato",
-          value: 2,
-        },
-        {
-          title: "salas",
-          value: 3,
-        },
-      ],
       quizCreationDialogOpen: false,
     };
   },

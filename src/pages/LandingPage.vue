@@ -22,6 +22,7 @@
                   style="background-color: #d37146; color: white"
                   class="w-100"
                   rounded="xs"
+                  to="/eduquiz/register"
                 >
                   começar agora
                 </v-btn>
@@ -33,6 +34,8 @@
                   class="w-100"
                   height="50"
                   rounded="xs"
+                  href="https://github.com/MinhaTu/eduquiz"
+                  target="_blank"
                   >saiba mais</v-btn
                 >
               </v-col>
@@ -78,6 +81,7 @@
                   style="background-color: #d37146; color: white"
                   class="w-100"
                   rounded="xs"
+                  to="/eduquiz/register"
                 >
                   começar agora
                 </v-btn>
@@ -194,6 +198,7 @@
           height="50"
           style="background-color: #d37146; color: white"
           rounded="xs"
+          to="/eduquiz/register"
         >
           Iniciar Quiz
         </v-btn>
